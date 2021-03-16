@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <link rel="shortcut icon" href="{{ static_url('favicon.ico') }}">
+        <link rel="stylesheet" href="{{ static_url('css/main.css')}}">
+        <script src="{{ static_url('js/searcher.js')}}"></script>
+        <title>Books administrator</title>
+    </head>
+    <body>
+        <header>
+            <h1>Title</h1>
+        </header>
+    <section>
+        <div id="upload">
+            <h3>File uploader</h3>
+            
+            <br>
+
+            <form method="POST" enctype="multipart/form-data">
+                <label for="title">Title</label>
+                <br>
+                <input type="text" id="title" name="title" class="text" onblur="sendName(this.value)" required>
+
+                <label for="author">Author</label>
+                <br>
+                <input type="text" id="author" name="author" class="text" required>
+
+                <label for="Philosophy Politics Economy Fiction">Categories</label>
+                <br>
+                <input class="checkbox" type="checkbox" name="category" id="Philosophy" value="Philosophy">Philosophy
+                <br>
+                <input class="checkbox" type="checkbox" name="category" id="Politics" value="Politics">Politics
+                <br>
+                <input class="checkbox" type="checkbox" name="category" id="Economy" value="Economy">Economy
+                <br>
+                <input type="checkbox" name="category" id="Fiction" value="Fiction">Fiction
+                <br>
+
+                <label for="language">Language</label>
+                <br>
+                <input class="checkbox" type="checkbox" name="language" value="es">Español
+                <br>
+                <input class="checkbox" type="checkbox" name="language" value="en">English
+                <br>
+                <input class="checkbox" type="checkbox" name="language" value="la">Lingua Latina
+                <br>
+                <input class="checkbox" type="checkbox" name="language" value="ca">Català
+                <br>
+                <input class="checkbox" type="checkbox" name="language" value="fr">Français
+                <br>
+                <input type="checkbox" name="language" value="de">Deutsche
+
+                <!-- Esto va al final del formulario -->
+                <label for="file" class="button">Select file</label>
+                <input id="file" name="file" type="file" style="display: none;" required></input>
+
+                <br>
+                <input class="button" type="submit">
+            </form>
+        </div>
+        <div id="searcher">
+            <h3>Searcher</h3>
+            <br>
+            <table id="searcherTable">
+                <tr class="rowWhite">
+                    <th class="left">Title</th>
+                    <th>Author</th>
+                    <th>Category</th>
+                    <th>Language</th>
+                    <th>File class</th>
+                    <th class="right">Download</th>
+                </tr>
+            </table>
+        </div>
+    </section>
+    </body>
+</html>
