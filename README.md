@@ -4,9 +4,19 @@ A simple to use webserver to administrate a digital library, accepting all class
 
 Also the user can apply filters to search for specific books, having the posibility to filter by the name, the author, the category, the language and the file format (to do).
 
-## What you need to execute
+## Installation guide
 
-This server requires the use of Python 3 and the Tornado framework version 6.1.
+You need the Python framework Tornado, which is installed by this way:
+
+```
+pip3 install tornado
+```
+
+Then you only have to execute the server using the command:
+
+```
+python3 main.py
+```
 
 ## Server functioning
 
