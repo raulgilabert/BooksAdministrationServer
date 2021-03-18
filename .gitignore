@@ -1,4 +1,5 @@
 base.db
 .idea
 uploads/*
+static/uploads/*
 __pycache__/

@@ -36,7 +36,7 @@ function requestJSON() {
             var textCategory = document.createTextNode(msg["Category"]);
             var textLanguage = document.createTextNode(msg["Language"]);
             var textFileFormat = document.createTextNode(msg["FileFormat"]);
-            var textDownload = "Download";
+            var textDownload =             '<a href="/files/' + msg["Filename"] + '" download>Download</a>';
 
             var buttonDownload = document.createElement("BUTTON");
             buttonDownload.innerHTML = textDownload;

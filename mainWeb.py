@@ -12,7 +12,7 @@ class Main(tornado.web.RequestHandler):
 
         print("received file " + filename)
 
-        with open("uploads/" + filename, "wb") as f:
+        with open("static/uploads/" + filename, "wb") as f:
             f.write(file["body"])
 
             f.close()
