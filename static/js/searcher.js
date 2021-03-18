@@ -14,80 +14,84 @@ function requestJSON() {
     ws.send("JSON Request");
 
     ws.onmessage = function(event) {
-        if (event.data != "close") {
-            var msg = JSON.parse(event.data)
+        receiveData(event);
+    };
+};
 
-            var x = document.getElementById("searcherTable").rows.length;
+function receiveData(event) {
+    if (event.data != "close") {
+        var msg = JSON.parse(event.data)
 
-            console.log(x);
+        var x = document.getElementById("searcherTable").rows.length;
 
-            var tableRef = document.getElementById("searcherTable");
-            var newRow = tableRef.insertRow(x);
+        console.log(x);
 
-            var cellTitle = newRow.insertCell(0);
-            var cellAuthor = newRow.insertCell(1);
-            var cellCategory = newRow.insertCell(2);
-            var cellLanguage = newRow.insertCell(3);
-            var cellFileFormat = newRow.insertCell(4);
-            var cellDownload = newRow.insertCell(5);
+        var tableRef = document.getElementById("searcherTable");
+        var newRow = tableRef.insertRow(x);
 
-            var textTitle = document.createTextNode(msg["Title"]);
-            var textAuthor = document.createTextNode(msg["Author"]);
-            var textCategory = document.createTextNode(msg["Category"]);
-            var textLanguage = document.createTextNode(msg["Language"]);
-            var textFileFormat = document.createTextNode(msg["FileFormat"]);
-            var textDownload =             '<a href="/files/' + msg["Filename"] + '" download>Download</a>';
+        var cellTitle = newRow.insertCell(0);
+        var cellAuthor = newRow.insertCell(1);
+        var cellCategory = newRow.insertCell(2);
+        var cellLanguage = newRow.insertCell(3);
+        var cellFileFormat = newRow.insertCell(4);
+        var cellDownload = newRow.insertCell(5);
 
-            var buttonDownload = document.createElement("BUTTON");
-            buttonDownload.innerHTML = textDownload;
+        var textTitle = document.createTextNode(msg["Title"]);
+        var textAuthor = document.createTextNode(msg["Author"]);
+        var textCategory = document.createTextNode(msg["Category"]);
+        var textLanguage = document.createTextNode(msg["Language"]);
+        var textFileFormat = document.createTextNode(msg["FileFormat"]);
+        var textDownload =             '<a href="/files/' + msg["Filename"] + '" download>Download</a>';
 
-            buttonDownload.className = "buttonDownload";
+        var buttonDownload = document.createElement("BUTTON");
+        buttonDownload.innerHTML = textDownload;
 
-            cellTitle.appendChild(textTitle);
-            cellAuthor.appendChild(textAuthor);
-            cellCategory.appendChild(textCategory);
-            cellLanguage.appendChild(textLanguage);
-            cellFileFormat.appendChild(textFileFormat);
-            cellDownload.appendChild(buttonDownload);
+        buttonDownload.className = "buttonDownload";
 
-            cellTitle.className = "left";
+        cellTitle.appendChild(textTitle);
+        cellAuthor.appendChild(textAuthor);
+        cellCategory.appendChild(textCategory);
+        cellLanguage.appendChild(textLanguage);
+        cellFileFormat.appendChild(textFileFormat);
+        cellDownload.appendChild(buttonDownload);
 
-            if (i%2 == 1) {
-                cellTitle.className = "rowWhite left";
-                cellAuthor.className = "rowWhite";
-                cellCategory.className = "rowWhite";
-                cellLanguage.className = "rowWhite";
-                cellFileFormat.className = "rowWhite";
-                cellDownload.className = "rowWhite right";
-                }
-            else {
-                cellTitle.className = "rowGray left";
-                cellAuthor.className = "rowGray";
-                cellCategory.className = "rowGray";
-                cellLanguage.className = "rowGray";
-                cellFileFormat.className = "rowGray";
-                cellDownload.className = "rowGray right";
-            };
+        cellTitle.className = "left";
 
-            ws.send("next");
-
-            ++i
-        }
-
-        else {
-            ws.close();
-            
-            var x = document.getElementById("searcherTable").rows.length;
-
-            var tableRef = document.getElementById("searcherTable");
-            var newBlankRow = tableRef.insertRow(x);
-
-            for (let i = 0; i < 6; i++) {
-                var cell = newBlankRow.insertCell(i);
-                cell.className = "endTable";
+        if (i%2 == 1) {
+            cellTitle.className = "rowWhite left";
+            cellAuthor.className = "rowWhite";
+            cellCategory.className = "rowWhite";
+            cellLanguage.className = "rowWhite";
+            cellFileFormat.className = "rowWhite";
+            cellDownload.className = "rowWhite right";
             }
+        else {
+            cellTitle.className = "rowGray left";
+            cellAuthor.className = "rowGray";
+            cellCategory.className = "rowGray";
+            cellLanguage.className = "rowGray";
+            cellFileFormat.className = "rowGray";
+            cellDownload.className = "rowGray right";
+        };
 
-            i = 0;
+        ws.send("next");
+
+        ++i
+    }
+
+    else {
+        ws.close();
+        
+        var x = document.getElementById("searcherTable").rows.length;
+
+        var tableRef = document.getElementById("searcherTable");
+        var newBlankRow = tableRef.insertRow(x);
+
+        for (let i = 0; i < 6; i++) {
+            var cell = newBlankRow.insertCell(i);
+            cell.className = "endTable";
         }
+
+        i = 0;
     }
 }
