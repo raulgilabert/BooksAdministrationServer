@@ -1,3 +1,7 @@
+function changedFile(value) {
+    alert('Selected file: ' + value);
+};
+
 var ws = new WebSocket("ws://localhost:8888/websocket");
 
 var i = 0;
@@ -57,7 +61,7 @@ function receiveData(event) {
 
         cellTitle.className = "left";
 
-        if (i%2 == 1) {
+        if (i%2 == 0) {
             cellTitle.className = "rowWhite left";
             cellAuthor.className = "rowWhite";
             cellCategory.className = "rowWhite";
