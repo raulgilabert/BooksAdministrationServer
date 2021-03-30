@@ -8,10 +8,17 @@ class Searcher(tornado.websocket.WebSocketHandler):
     def open(self):
         print("Open")
 
+        self.filters = {
+            "Title": "",
+            "Author": "",
+            "Category": "",
+            "Language": "",
+            "Format": ""
+        }
+
     def on_message(self, message):
-        print(message)
         if message == "JSON Request":
-            self.firstSendJSON()
+            self.firstSendJSON(self.filters)
 
         elif message == "next":
             self.sendJSON()
@@ -29,21 +36,27 @@ class Searcher(tornado.websocket.WebSocketHandler):
                 else:
                     category += char
 
-            filter = message[i:]
+            filterData = message[i:]
 
-            print(category + " with data " + filter)
+            self.filters[category] = filterData
 
+            print(category + " with data " + filterData)
+
+            self.firstSendJSON(self.filters)
 
     def on_close(self):
         print("Close")
 
-    def firstSendJSON(self):
+    def firstSendJSON(self, filters):
         print("Received JSON request")
 
         base = sqlite3.connect("base.db")
         cursor = base.cursor()
 
-        cursor.execute("SELECT * FROM data ORDER BY Title ASC")
+        if filters["Title"] != "":
+            cursor.execute("SELECT * FROM data WHERE Title LIKE '%" + filters["Title"] + "%'")
+        else:
+            cursor.execute("SELECT * FROM data")
 
         self.data = cursor.fetchall()
         self.i = 0
@@ -53,20 +66,24 @@ class Searcher(tornado.websocket.WebSocketHandler):
     def sendJSON(self):
         try:
             dat = self.data[self.i]
+
+            JSONToSend = {
+                "Title": dat[0],
+                "Author": dat[1],
+                "Language": dat[2],
+                "Category": dat[3],
+                "FileFormat": dat[4],
+                "Filename": dat[5]
+            }
+
+            JSONToSendDumped = json.dumps(JSONToSend)
+
+            self.write_message(JSONToSendDumped)
+
+            self.i += 1
+
         except IndexError:
-                self.write_message("close")
+            self.write_message("close")
+            print("exception")
+            pass
 
-        JSONToSend = {
-            "Title": dat[0],
-            "Author": dat[1],
-            "Language": dat[2],
-            "Category": dat[3],
-            "FileFormat": dat[4],
-            "Filename": dat[5]
-        }
-
-        JSONToSendDumped = json.dumps(JSONToSend)
-
-        self.write_message(JSONToSendDumped)
-
-        self.i += 1

@@ -2,6 +2,8 @@ function changedFile(value) {
     alert('Selected file: ' + value);
 };
 
+function isOpen(ws) { return ws.readyState === ws.OPEN }
+
 var ws = new WebSocket("ws://localhost:8888/websocket");
 
 var i = 0;
@@ -22,8 +24,19 @@ function filter(meh) {
     ws.onopen = function() {
         if (titleValue!="") {
             ws.send("Filter Title " + titleValue)
+
+            var rowsToDelete = document.getElementById("searcherTable").rows.length;
+            for (let i = 2; i < rowsToDelete; i++) {
+                document.getElementById("searcherTable").deleteRow(2);
+                
+                console.log(i);
+            }
         }
     };
+
+    ws.onmessage = function(event) {
+        receiveData(event);
+    }
 };
 
 function requestJSON() {
@@ -35,6 +48,7 @@ function requestJSON() {
 };
 
 function receiveData(event) {
+    console.log(event.data);
     if (event.data != "close") {
         var msg = JSON.parse(event.data)
 
@@ -90,8 +104,9 @@ function receiveData(event) {
             cellDownload.className = "rowGray right";
         };
 
-        ws.send("next");
-
+        if (isOpen(ws)) {
+            ws.send("next");
+        };
         ++i
     }
 

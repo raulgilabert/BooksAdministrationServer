@@ -21,3 +21,8 @@ python3 main.py
 ## Server working
 
 The web loads in two different parts. First it does the http request to load the page and then the web connects to the server using a websocket connection to load all the books that match with the search filters, allowing to change that filters without reloading the page.
+
+
+# To-do
+
+Re-do all the client-server in load communication passing from websocket to http.
