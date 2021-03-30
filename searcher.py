@@ -27,7 +27,7 @@ class Searcher(tornado.websocket.WebSocketHandler):
         base = sqlite3.connect("base.db")
         cursor = base.cursor()
 
-        cursor.execute("SELECT * FROM data")
+        cursor.execute("SELECT * FROM data ORDER BY Title ASC")
 
         self.data = cursor.fetchall()
         self.i = 0
