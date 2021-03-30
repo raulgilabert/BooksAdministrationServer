@@ -9,14 +9,33 @@ class Searcher(tornado.websocket.WebSocketHandler):
         print("Open")
 
     def on_message(self, message):
+        print(message)
         if message == "JSON Request":
             self.firstSendJSON()
 
-        if message == "next":
+        elif message == "next":
             try:
                 self.sendJSON()
             except IndexError:
                 self.write_message("close")
+
+        elif message[:6] == "Filter":
+            dataToFilter = message[7:]
+
+            category = ""
+            i = 7
+
+            for char in dataToFilter:
+                i += 1
+                if char == " ":
+                    break
+                else:
+                    category += char
+
+            filter = message[i:]
+
+            print(category + " with data " + filter)
+
 
     def on_close(self):
         print("Close")

@@ -10,8 +10,20 @@ ws.onopen = function() {
     requestJSON();
 };
 
-function sendName(value) {
-    ws.send(value);
+function filter(meh) {
+    titleValue = document.getElementById("titleInput").value;
+    authorValue = document.getElementById("authorInput").value;
+    categoryValue = document.getElementById("categoryInput").value;
+    languageValue = document.getElementById("languageInput").value;
+    fileClassValue = document.getElementById("fileClassInput").value;
+
+    var ws = new WebSocket("ws://localhost:8888/websocket");
+
+    ws.onopen = function() {
+        if (titleValue!="") {
+            ws.send("Filter Title " + titleValue)
+        }
+    };
 };
 
 function requestJSON() {
@@ -45,7 +57,7 @@ function receiveData(event) {
         var textCategory = document.createTextNode(msg["Category"]);
         var textLanguage = document.createTextNode(msg["Language"]);
         var textFileFormat = document.createTextNode(msg["FileFormat"]);
-        var textDownload =             '<a href="/files/' + msg["Filename"] + '" download>Download</a>';
+        var textDownload = '<a href="/files/' + msg["Filename"] + '" download>Download</a>';
 
         var buttonDownload = document.createElement("BUTTON");
         buttonDownload.innerHTML = textDownload;
