@@ -14,10 +14,7 @@ class Searcher(tornado.websocket.WebSocketHandler):
             self.firstSendJSON()
 
         elif message == "next":
-            try:
-                self.sendJSON()
-            except IndexError:
-                self.write_message("close")
+            self.sendJSON()
 
         elif message[:6] == "Filter":
             dataToFilter = message[7:]
@@ -54,7 +51,10 @@ class Searcher(tornado.websocket.WebSocketHandler):
         self.sendJSON()
 
     def sendJSON(self):
-        dat = self.data[self.i]
+        try:
+            dat = self.data[self.i]
+        except IndexError:
+                self.write_message("close")
 
         JSONToSend = {
             "Title": dat[0],
