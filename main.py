@@ -22,7 +22,7 @@ class Application(tornado.web.Application):
         tornado.web.Application.__init__(self, [
             tornado.web.url(r"/", mainWeb.Main),
             tornado.web.url(r"/searcher", searcher.Searcher),
-            tornado.web.url(r"/files/(.*)", tornado.web.StaticFileHandler, 
+            tornado.web.url(r"/files/(.*)", tornado.web.StaticFileHandler,
                             {"path": os.path.join(base_dir, "static/uploads")})
         ], **settings)
 

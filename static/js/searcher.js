@@ -85,6 +85,46 @@ function jsonListener() {
 // Request data without filters to server
 httpRquest = new XMLHttpRequest();
 httpRquest.addEventListener("load", jsonListener);
-httpRquest.open("GET", "./searcher");
+httpRquest.open("GET", "./searcher?filter=no");
 httpRquest.send();
 
+function filter() {
+    var rowsToDelete = document.getElementById("searcherTable").rows.length;
+    for (let i = 2; i < rowsToDelete; i++) {
+        document.getElementById("searcherTable").deleteRow(2);
+        
+        console.log(i);
+    };
+
+    titleValue = document.getElementById("titleInput").value;
+    authorValue = document.getElementById("authorInput").value;
+    categoryValue = document.getElementById("categoryInput").value;
+    languageValue = document.getElementById("languageInput").value;
+    fileFormatValue = document.getElementById("fileClassInput").value;
+
+    if (titleValue == "") {
+        titleValue = "None";
+    };
+
+    if (authorValue == "") {
+        authorValue = "None";
+    };
+    
+    if (categoryValue == "") {
+        categoryValue = "None";
+    };
+    
+    if (languageValue=="") {
+        languageValue = "None";
+    };
+    
+    if (fileFormatValue=="") {
+        fileFormatValue = "None";
+    };
+    
+    // Request data with filters to server
+    httpRquest = new XMLHttpRequest();
+    httpRquest.addEventListener("load", jsonListener);
+    httpRquest.open("GET", "./searcher?filter=yes&Title=" + titleValue + "&Author=" + authorValue + "&Category=" + categoryValue + "&Language=" + languageValue + "&Format=" + fileFormatValue);
+    httpRquest.send();
+}
