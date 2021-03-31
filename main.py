@@ -22,7 +22,8 @@ class Application(tornado.web.Application):
         tornado.web.Application.__init__(self, [
             tornado.web.url(r"/", mainWeb.Main),
             tornado.web.url(r"/searcher", searcher.Searcher),
-            tornado.web.url(r"/files/(.*)", tornado.web.StaticFileHandler, {"path": os.path.join(base_dir, "static/uploads")})
+            tornado.web.url(r"/files/(.*)", tornado.web.StaticFileHandler, 
+                            {"path": os.path.join(base_dir, "static/uploads")})
         ], **settings)
 
 
@@ -30,11 +31,12 @@ if __name__ == '__main__':
     base = sqlite3.connect("base.db")
     cursor = base.cursor()
 
-    cursor.execute("CREATE TABLE IF NOT EXISTS data (Title TEXT, Author TEXT, Language TEXT, Category TEXT, Format TEXT, File TEXT)")
+    cursor.execute("""CREATE TABLE IF NOT EXISTS data (Title TEXT, Author TEXT,
+                    Language TEXT, Category TEXT, Format TEXT, File TEXT)""")
 
     try:
         os.mkdir("static/uploads/")
-    except:
+    except FileExistsError:
         pass
 
     Application().listen(8888)

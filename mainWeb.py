@@ -39,8 +39,8 @@ class Main(tornado.web.RequestHandler):
         base = sqlite3.connect("base.db")
         cursor = base.cursor()
 
-        cursor.execute("INSERT INTO data (Title, Author, Language, Category, Format, File) VALUES(?, ?, ?, ?, ?, ?)",
-                       data)
+        cursor.execute("""INSERT INTO data (Title, Author, Language, Category,
+                          Format, File) VALUES(?, ?, ?, ?, ?, ?)""", data)
 
         base.commit()
 
