@@ -2,3 +2,4 @@ base.db
 .idea
 static/uploads/*
 __pycache__/
+.vscode/
