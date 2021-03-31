@@ -12,7 +12,6 @@ class Application(tornado.web.Application):
     def __init__(self):
         base_dir = os.path.dirname(__file__)
         settings = {
-            "cookie_secret": "bZJc2sWbQLKos6GkHn/VB9oXwQt8S0R0kRvJ5/xJ89E=",
             'template_path': os.path.join(base_dir, "templates"),
             'static_path': os.path.join(base_dir, "static"),
             'debug': True,
