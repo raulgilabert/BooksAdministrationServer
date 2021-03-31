@@ -2,63 +2,24 @@ function changedFile(value) {
     alert('Selected file: ' + value);
 };
 
-function isOpen(ws) { return ws.readyState === ws.OPEN }
+// JSON listener and rows writer
+function jsonListener() {
+    // Converts string output to array
+    data = JSON.parse(this.responseText);
+    
+    i = 0;
 
-var ws = new WebSocket("ws://localhost:8888/websocket");
-
-var i = 0;
-
-ws.onopen = function() {
-    requestJSON();
-};
-
-function filter(meh) {
-    titleValue = document.getElementById("titleInput").value;
-    authorValue = document.getElementById("authorInput").value;
-    categoryValue = document.getElementById("categoryInput").value;
-    languageValue = document.getElementById("languageInput").value;
-    fileClassValue = document.getElementById("fileClassInput").value;
-
-    var ws = new WebSocket("ws://localhost:8888/websocket");
-
-    ws.onopen = function() {
-        if (titleValue!="") {
-            ws.send("Filter Title " + titleValue)
-
-            var rowsToDelete = document.getElementById("searcherTable").rows.length;
-            for (let i = 2; i < rowsToDelete; i++) {
-                document.getElementById("searcherTable").deleteRow(2);
-                
-                console.log(i);
-            }
-        }
-    };
-
-    ws.onmessage = function(event) {
-        receiveData(event);
-    }
-};
-
-function requestJSON() {
-    ws.send("JSON Request");
-
-    ws.onmessage = function(event) {
-        receiveData(event);
-    };
-};
-
-function receiveData(event) {
-    console.log(event.data);
-    if (event.data != "close") {
-        var msg = JSON.parse(event.data)
-
+    // Loop viewing all the data received from the server
+    data.forEach(element => {
         var x = document.getElementById("searcherTable").rows.length;
 
-        console.log(x);
-
+        // Get table
         var tableRef = document.getElementById("searcherTable");
+
+        // Create row
         var newRow = tableRef.insertRow(x);
 
+        // Create cells for the data
         var cellTitle = newRow.insertCell(0);
         var cellAuthor = newRow.insertCell(1);
         var cellCategory = newRow.insertCell(2);
@@ -66,18 +27,21 @@ function receiveData(event) {
         var cellFileFormat = newRow.insertCell(4);
         var cellDownload = newRow.insertCell(5);
 
-        var textTitle = document.createTextNode(msg["Title"]);
-        var textAuthor = document.createTextNode(msg["Author"]);
-        var textCategory = document.createTextNode(msg["Category"]);
-        var textLanguage = document.createTextNode(msg["Language"]);
-        var textFileFormat = document.createTextNode(msg["FileFormat"]);
-        var textDownload = '<a href="/files/' + msg["Filename"] + '" download>Download</a>';
+        // Create text to show in cells
+        var textTitle = document.createTextNode(element[0]);
+        var textAuthor = document.createTextNode(element[1]);
+        var textCategory = document.createTextNode(element[2]);
+        var textLanguage = document.createTextNode(element[3]);
+        var textFileFormat = document.createTextNode(element[4]);
 
+        // Create download button
+        var textDownload = '<a href="/files/' + element[5] + '" download>Download</a>';
         var buttonDownload = document.createElement("BUTTON");
         buttonDownload.innerHTML = textDownload;
 
         buttonDownload.className = "buttonDownload";
 
+        // Set text to cells
         cellTitle.appendChild(textTitle);
         cellAuthor.appendChild(textAuthor);
         cellCategory.appendChild(textCategory);
@@ -85,6 +49,7 @@ function receiveData(event) {
         cellFileFormat.appendChild(textFileFormat);
         cellDownload.appendChild(buttonDownload);
 
+        // Set style to cells
         cellTitle.className = "left";
 
         if (i%2 == 0) {
@@ -103,26 +68,23 @@ function receiveData(event) {
             cellFileFormat.className = "rowGray";
             cellDownload.className = "rowGray right";
         };
+    });
 
-        if (isOpen(ws)) {
-            ws.send("next");
-        };
-        ++i
-    }
+    // Create last row of cells 
+    var x = document.getElementById("searcherTable").rows.length;
 
-    else {
-        ws.close();
-        
-        var x = document.getElementById("searcherTable").rows.length;
+    var tableRef = document.getElementById("searcherTable");
+    var newBlankRow = tableRef.insertRow(x);
 
-        var tableRef = document.getElementById("searcherTable");
-        var newBlankRow = tableRef.insertRow(x);
-
-        for (let i = 0; i < 6; i++) {
-            var cell = newBlankRow.insertCell(i);
-            cell.className = "endTable";
-        }
-
-        i = 0;
+    for (let i = 0; i < 6; i++) {
+        var cell = newBlankRow.insertCell(i);
+        cell.className = "endTable";
     }
 }
+
+// Request data without filters to server
+httpRquest = new XMLHttpRequest();
+httpRquest.addEventListener("load", jsonListener);
+httpRquest.open("GET", "./searcher");
+httpRquest.send();
+
