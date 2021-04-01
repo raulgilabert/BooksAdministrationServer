@@ -68,6 +68,8 @@ function jsonListener() {
             cellFileFormat.className = "rowGray";
             cellDownload.className = "rowGray right";
         };
+
+        i++;
     });
 
     // Create last row of cells 
