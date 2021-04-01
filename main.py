@@ -31,7 +31,7 @@ if __name__ == '__main__':
     cursor = base.cursor()
 
     cursor.execute("""CREATE TABLE IF NOT EXISTS data (Title TEXT, Author TEXT,
-                    Language TEXT, Category TEXT, Format TEXT, File TEXT)""")
+                    Category TEXT, Language TEXT, Format TEXT, File TEXT)""")
 
     try:
         os.mkdir("static/uploads/")
