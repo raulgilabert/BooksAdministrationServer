@@ -12,7 +12,7 @@ class Searcher(tornado.web.RequestHandler):
         cursor = base.cursor()
 
         if applyFilter == "no":
-            cursor.execute("SELECT * FROM data")
+            cursor.execute("SELECT * FROM data ORDER BY Title ASC")
 
         else:
             titleFilter = self.get_argument("Title")
@@ -62,6 +62,8 @@ class Searcher(tornado.web.RequestHandler):
 
             if changed:
                 sqlRequest = sqlRequest[:-3]
+
+            sqlRequest += " ORDER BY Title ASC"
 
             print(sqlRequest)
 
