@@ -18,3 +18,8 @@ Then you only have to execute the server using the command:
 python3 main.py
 ```
 
+## Captures
+
+### Screenshot without any file uploaded
+
+![Blank screenshot](readme/screenshotBlank.png)
